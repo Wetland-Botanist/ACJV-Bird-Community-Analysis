@@ -1,0 +1,106 @@
+"","Site","State","Treatment","Year","runnel_age","totalbirds_mean","totalbirds_se","saltysparrow_mean","saltysparrow_se","totalsparrow_mean","totalsparrow_se"
+"1","Broad Cove","MA","No Action",2022,NA,10,1,1,1,1,1
+"2","Broad Cove","MA","Reference",2022,NA,7,1,1,1,1,1
+"3","Broad Cove","MA","Reference",2023,NA,13.5,6.5,1.5,1.5,1.5,1.5
+"4","Broad Cove","MA","Runnel",2022,5,7.5,1.5,0,0,0,0
+"5","Broad Cove","MA","Runnel",2023,6,13,4,1,0,1,0
+"6","Canonchet","RI","No Action",2022,NA,9.5,6.5,2.5,0.5,2.5,0.5
+"7","Canonchet","RI","No Action",2023,NA,9,5,3,2,3,2
+"8","Canonchet","RI","Reference",2022,NA,4,NA,2,NA,2,NA
+"9","Canonchet","RI","Reference",2023,NA,25,13,10.5,3.5,10.5,3.5
+"10","Canonchet","RI","Runnel",2022,7,6,NA,3,NA,3,NA
+"11","Canonchet","RI","Runnel",2023,8,14.5,0.5,5.5,0.5,5.5,0.5
+"12","Essex","MA","No Action",2022,NA,7.8,3,0,0,0,0
+"13","Essex","MA","No Action",2023,NA,5.5,2,0.2,0.2,0.2,0.2
+"14","Essex","MA","Reference",2022,NA,3.5,1.5,0,0,0,0
+"15","Essex","MA","Reference",2023,NA,8,4,0,0,0,0
+"16","Essex","MA","Runnel",2022,0,10.5,5.1,0,0,0,0
+"17","Essex","MA","Runnel",2023,1,6.2,2.4,0,0,0.2,0.2
+"18","Ipswich","MA","No Action",2022,NA,6,1.8,0,0,0,0
+"19","Ipswich","MA","No Action",2023,1,2,NA,0,NA,0,NA
+"20","Ipswich","MA","No Action",2023,NA,7,NA,0,NA,0,NA
+"21","Ipswich","MA","Reference",2022,NA,4.5,2,0,0,0,0
+"22","Ipswich","MA","Reference",2023,NA,6,1,0,0,0,0
+"23","Ipswich","MA","Runnel",2022,0,10,4,0,0,0,0
+"24","Ipswich","MA","Runnel",2023,1,9,NA,0,NA,3,NA
+"25","Jacob's Point","RI","No Action",2021,NA,17,9,2,0,2,0
+"26","Jacob's Point","RI","No Action",2023,NA,11,0,6,2,6,2
+"27","Jacob's Point","RI","Runnel",2021,5,8,1,2.5,0.5,2.5,0.5
+"28","Jacob's Point","RI","Runnel",2023,7,13,4,6,1,6,1
+"29","Kent's Island","MA","No Action",2022,NA,7,1,1,1,1,1
+"30","Kent's Island","MA","No Action",2023,NA,5.5,2.5,0,0,0,0
+"31","Kent's Island","MA","Reference",2022,NA,12,8,2.5,2.5,2.5,2.5
+"32","Kent's Island","MA","Reference",2023,NA,18,3,5.5,2.5,5.5,2.5
+"33","Kent's Island","MA","Runnel",2022,0,9,4,0.5,0.5,0.5,0.5
+"34","Kent's Island","MA","Runnel",2023,1,13,1,2,1,2,1
+"35","Middlebridge","RI","No Action",2022,NA,4.5,0.5,0,0,0,0
+"36","Middlebridge","RI","No Action",2023,NA,6.5,4.5,1,1,1,1
+"37","Middlebridge","RI","Reference",2022,NA,4.5,0.5,0,0,0,0
+"38","Middlebridge","RI","Reference",2023,NA,2.5,1.5,0,0,0,0
+"39","Middlebridge","RI","Runnel",2022,6,2.5,1.5,0.5,0.5,0.5,0.5
+"40","Middlebridge","RI","Runnel",2023,7,3,3,0,0,0,0
+"41","Moody Marsh","ME","No Action",2021,NA,3,3,0,0,0,0
+"42","Moody Marsh","ME","No Action",2023,NA,7.5,3.5,2.5,0.5,3.5,1.5
+"43","Moody Marsh","ME","Reference",2021,NA,2.5,0.5,0,0,0,0
+"44","Moody Marsh","ME","Reference",2023,NA,17.5,16.5,0,0,0.5,0.5
+"45","Moody Marsh","ME","Runnel",2021,10,2.5,0.5,0.5,0.5,0.5,0.5
+"46","Moody Marsh","ME","Runnel",2023,12,8.5,5.5,0,0,0.5,0.5
+"47","Narrow River","RI","No Action",2022,NA,3,NA,1,NA,1,NA
+"48","Narrow River","RI","No Action",2023,NA,16,6,7.5,2.5,7.5,2.5
+"49","Narrow River","RI","Reference",2022,NA,8,5,2,2,2,2
+"50","Narrow River","RI","Reference",2023,NA,11.5,3.5,4.5,0.5,4.5,0.5
+"51","Narrow River","RI","Runnel",2022,6,4.5,3.5,0,0,0,0
+"52","Narrow River","RI","Runnel",2023,7,19,6,13,2,13,2
+"53","Old Town Hill","MA","No Action",2022,NA,11,2,4,3,4,3
+"54","Old Town Hill","MA","No Action",2023,NA,9.5,2.5,1.5,1.5,1.5,1.5
+"55","Old Town Hill","MA","Reference",2022,NA,12.5,2.5,3,0,3,0
+"56","Old Town Hill","MA","Reference",2023,NA,20.5,3.5,7.5,2.5,7.5,2.5
+"57","Old Town Hill","MA","Runnel",2022,1,6,2,0.5,0.5,0.5,0.5
+"58","Old Town Hill","MA","Runnel",2023,2,11.5,3.5,4,2,4,2
+"59","Pine Island","MA","No Action",2021,NA,7,2,0.5,0.5,2,2
+"60","Pine Island","MA","No Action",2023,NA,13,4,0.5,0.5,0.5,0.5
+"61","Pine Island","MA","Reference",2021,NA,7.2,2,2,0.9,2,0.9
+"62","Pine Island","MA","Reference",2023,NA,7,1.1,3.5,1,3.5,1
+"63","Pine Island","MA","Runnel",2021,6,12.2,3.5,2.2,1.3,2.8,1.1
+"64","Pine Island","MA","Runnel",2023,8,16.8,5.4,4.8,0.8,4.8,0.8
+"65","Plum Island","MA","No Action",2021,NA,10,5,1.5,1.5,3,3
+"66","Plum Island","MA","No Action",2022,NA,12,1,0.5,0.5,0.5,0.5
+"67","Plum Island","MA","No Action",2023,NA,13.2,2.7,0.2,0.2,0.2,0.2
+"68","Plum Island","MA","Reference",2021,NA,11,2.3,3,0.4,4,0.7
+"69","Plum Island","MA","Reference",2022,NA,9.2,2.1,2.2,0.2,2.2,0.2
+"70","Plum Island","MA","Reference",2023,NA,12.5,2,4,0.9,4.6,1
+"71","Plum Island","MA","Runnel",2021,2,11,6,1,1,3.5,1.5
+"72","Plum Island","MA","Runnel",2021,4,10.5,3.5,2,0,4,2
+"73","Plum Island","MA","Runnel",2022,0,17,NA,2,NA,2,NA
+"74","Plum Island","MA","Runnel",2022,3,12.7,0.9,2,0,3,1
+"75","Plum Island","MA","Runnel",2023,4,14.7,2.3,2.6,0.8,2.9,0.7
+"76","Plum Island","MA","Runnel",2023,6,11,NA,6,NA,6,NA
+"77","Potter's Pond","RI","No Action",2021,NA,5.5,0.5,0.5,0.5,0.5,0.5
+"78","Potter's Pond","RI","No Action",2023,NA,5.5,0.5,0.5,0.5,0.5,0.5
+"79","Potter's Pond","RI","Reference",2021,NA,9.5,4.5,1,1,1,1
+"80","Potter's Pond","RI","Reference",2023,NA,11.5,2.5,3,0,3,0
+"81","Potter's Pond","RI","Runnel",2021,3,16,2,4,2,4,2
+"82","Potter's Pond","RI","Runnel",2023,5,22,2,7.5,0.5,7.5,0.5
+"83","Round Marsh","RI","No Action",2023,NA,6.5,0.5,2,2,2,2
+"84","Round Marsh","RI","Reference",2021,NA,1,1,0,0,0,0
+"85","Round Marsh","RI","Reference",2023,NA,15.5,7.5,7,2,7,2
+"86","Round Marsh","RI","Runnel",2021,7,7.5,1.5,0,0,0,0
+"87","Round Marsh","RI","Runnel",2023,9,15.5,6.5,8.5,4.5,8.5,4.5
+"88","Sapowet","RI","No Action",2022,NA,5,3,2,2,2,2
+"89","Sapowet","RI","No Action",2023,NA,4,0,0,0,0,0
+"90","Sapowet","RI","Reference",2022,NA,14,5,4.5,4.5,4.5,4.5
+"91","Sapowet","RI","Reference",2023,NA,12,3,10,3,10,3
+"92","Sapowet","RI","Runnel",2022,0,14,NA,0,NA,0,NA
+"93","Sapowet","RI","Runnel",2022,4,20.5,11.5,11,8,11,8
+"94","Sapowet","RI","Runnel",2023,1,6.5,0.5,3.5,1.5,3.5,1.5
+"95","Sapowet","RI","Runnel",2023,5,22,9,9,1,9,1
+"96","Weekapaug Foundation","RI","No Action",2021,NA,9,NA,0,NA,0,NA
+"97","Weekapaug Foundation","RI","No Action",2023,NA,11.5,3.5,0,0,0,0
+"98","Weekapaug Foundation","RI","Runnel",2021,4,5,NA,0,NA,0,NA
+"99","Weekapaug Foundation","RI","Runnel",2023,6,7,2,0,0,0,0
+"100","Winnapaug Town Land","RI","No Action",2021,NA,3,NA,0,NA,0,NA
+"101","Winnapaug Town Land","RI","No Action",2023,NA,7,1,0,0,0,0
+"102","Winnapaug Town Land","RI","Reference",2021,NA,8,NA,0,NA,0,NA
+"103","Winnapaug Town Land","RI","Reference",2023,NA,12.5,8.5,1,0,1,0
+"104","Winnapaug Town Land","RI","Runnel",2021,8,6,NA,0,NA,0,NA
+"105","Winnapaug Town Land","RI","Runnel",2023,10,7,2,0,0,0,0

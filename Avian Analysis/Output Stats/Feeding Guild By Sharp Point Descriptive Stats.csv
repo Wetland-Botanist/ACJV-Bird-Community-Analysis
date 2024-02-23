@@ -1,0 +1,100 @@
+"","Treatment","Year","feeding_guild","Count.m","Count.se"
+"1","No Action","2021","AERIAL",0.33,0.1
+"2","No Action","2021","CARNIVOROUS",0,0
+"3","No Action","2021","DABBLER",0.08,0.02
+"4","No Action","2021","MARSH",4,1.15
+"5","No Action","2021","MUDFLAT",2,0.58
+"6","No Action","2021","PISCIVORE",0.17,0.05
+"7","No Action","2021","Panne_Dependent",2.67,0.77
+"8","No Action","2021","SCAVENGERS",0.08,0.02
+"9","No Action","2021","UPLAND",1,0.29
+"10","No Action","2021","WADING",0.42,0.12
+"11","No Action","2021","totalbirds",8.08,2.33
+"12","No Action","2022","AERIAL",0.61,0.13
+"13","No Action","2022","CARNIVOROUS",0,0
+"14","No Action","2022","DABBLER",0.17,0.04
+"15","No Action","2022","MARSH",4.09,0.85
+"16","No Action","2022","MUDFLAT",1.61,0.34
+"17","No Action","2022","PISCIVORE",0.09,0.02
+"18","No Action","2022","Panne_Dependent",2.09,0.44
+"19","No Action","2022","SCAVENGERS",0.09,0.02
+"20","No Action","2022","UPLAND",0.78,0.16
+"21","No Action","2022","WADING",0.22,0.05
+"22","No Action","2022","totalbirds",7.65,1.6
+"23","No Action","2023","AERIAL",2.36,0.39
+"24","No Action","2023","CARNIVOROUS",0,0
+"25","No Action","2023","DABBLER",0.25,0.04
+"26","No Action","2023","MARSH",3.31,0.55
+"27","No Action","2023","MUDFLAT",1.64,0.27
+"28","No Action","2023","PISCIVORE",0.11,0.02
+"29","No Action","2023","Panne_Dependent",2.58,0.43
+"30","No Action","2023","SCAVENGERS",0,0
+"31","No Action","2023","UPLAND",0.33,0.06
+"32","No Action","2023","WADING",0.58,0.1
+"33","No Action","2023","totalbirds",8.58,1.43
+"34","Reference","2021","AERIAL",0.2,0.05
+"35","Reference","2021","CARNIVOROUS",0,0
+"36","Reference","2021","DABBLER",0.13,0.03
+"37","Reference","2021","MARSH",4.73,1.22
+"38","Reference","2021","MUDFLAT",1.73,0.45
+"39","Reference","2021","PISCIVORE",0.07,0.02
+"40","Reference","2021","Panne_Dependent",1.93,0.5
+"41","Reference","2021","SCAVENGERS",0,0
+"42","Reference","2021","UPLAND",0.27,0.07
+"43","Reference","2021","WADING",0,0
+"44","Reference","2021","totalbirds",7.13,1.84
+"45","Reference","2022","AERIAL",1.2,0.24
+"46","Reference","2022","CARNIVOROUS",0,0
+"47","Reference","2022","DABBLER",0,0
+"48","Reference","2022","MARSH",4.16,0.83
+"49","Reference","2022","MUDFLAT",1.08,0.22
+"50","Reference","2022","PISCIVORE",0.36,0.07
+"51","Reference","2022","Panne_Dependent",1.56,0.31
+"52","Reference","2022","SCAVENGERS",0,0
+"53","Reference","2022","UPLAND",0.64,0.13
+"54","Reference","2022","WADING",0.12,0.02
+"55","Reference","2022","totalbirds",7.56,1.51
+"56","Reference","2023","AERIAL",2,0.32
+"57","Reference","2023","CARNIVOROUS",0,0
+"58","Reference","2023","DABBLER",0.97,0.16
+"59","Reference","2023","MARSH",6.53,1.06
+"60","Reference","2023","MUDFLAT",1.95,0.32
+"61","Reference","2023","PISCIVORE",0.11,0.02
+"62","Reference","2023","Panne_Dependent",3.39,0.55
+"63","Reference","2023","SCAVENGERS",0.11,0.02
+"64","Reference","2023","UPLAND",0.5,0.08
+"65","Reference","2023","WADING",0.37,0.06
+"66","Reference","2023","totalbirds",12.53,2.03
+"67","Runnel","2021","AERIAL",0.44,0.1
+"68","Runnel","2021","CARNIVOROUS",0,0
+"69","Runnel","2021","DABBLER",0,0
+"70","Runnel","2021","MARSH",4.61,1.09
+"71","Runnel","2021","MUDFLAT",3.11,0.73
+"72","Runnel","2021","PISCIVORE",0.06,0.01
+"73","Runnel","2021","Panne_Dependent",3.28,0.77
+"74","Runnel","2021","SCAVENGERS",0,0
+"75","Runnel","2021","UPLAND",1.17,0.27
+"76","Runnel","2021","WADING",0.11,0.03
+"77","Runnel","2021","totalbirds",9.5,2.24
+"78","Runnel","2022","AERIAL",1.75,0.36
+"79","Runnel","2022","CARNIVOROUS",0,0
+"80","Runnel","2022","DABBLER",0.08,0.02
+"81","Runnel","2022","MARSH",4.62,0.94
+"82","Runnel","2022","MUDFLAT",1.58,0.32
+"83","Runnel","2022","PISCIVORE",0.08,0.02
+"84","Runnel","2022","Panne_Dependent",3.08,0.63
+"85","Runnel","2022","SCAVENGERS",0,0
+"86","Runnel","2022","UPLAND",0.42,0.09
+"87","Runnel","2022","WADING",1.33,0.27
+"88","Runnel","2022","totalbirds",9.88,2.02
+"89","Runnel","2023","AERIAL",2.38,0.35
+"90","Runnel","2023","CARNIVOROUS",0.02,0
+"91","Runnel","2023","DABBLER",0.31,0.05
+"92","Runnel","2023","MARSH",6.82,1.02
+"93","Runnel","2023","MUDFLAT",2.18,0.32
+"94","Runnel","2023","PISCIVORE",0.42,0.06
+"95","Runnel","2023","Panne_Dependent",3.16,0.47
+"96","Runnel","2023","SCAVENGERS",0,0
+"97","Runnel","2023","UPLAND",0.2,0.03
+"98","Runnel","2023","WADING",0.24,0.04
+"99","Runnel","2023","totalbirds",12.58,1.87
