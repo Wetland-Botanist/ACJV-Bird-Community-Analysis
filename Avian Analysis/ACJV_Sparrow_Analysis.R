@@ -76,7 +76,7 @@ sparrows_treatment <- sparrows_point %>%
            saltysparrow.se = "saltysparrow_m_se",
            saltysparrow_percent.m = "saltysparrow_percent_m_1",
            saltysparrow_percent.se = "saltysparrow_percent_m_se") %>%
-  mutate(across(totalbirds.m:saltysparrow_percent.se, 
+ dplyr:: mutate(across(totalbirds.m:saltysparrow_percent.se, 
                 ~round(., 1)))
 
 write.csv(sparrows_treatment,

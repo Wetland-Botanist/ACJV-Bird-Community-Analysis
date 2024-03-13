@@ -129,8 +129,6 @@ nmds = metaMDS(species, distance = "bray", trymax = 20, k = 3)
 
 nmds
 
-stressplot(nmds)
-
 
 # Format for Graphing purposes
 
@@ -194,12 +192,12 @@ Bird_NMDS = ggplot(nmds.points,
   geom_segment(data = nmds.species,
                aes(x = 0, y = 0, xend = NMDS1, yend = NMDS2), 
                size =1, alpha = 0.5, colour = "grey30") +
-  geom_text(data = nmds.site,
-                      aes(x = NMDS1, y = NMDS2), colour = "black", 
-                      fontface = "bold", label = row.names(nmds.site), size = 5) + 
-  geom_segment(data = nmds.site,
-                aes(x = 0, y = 0, xend = NMDS1, yend = NMDS2), 
-               size =1, alpha = 0.5, colour = "grey30") +
+  #geom_text(data = nmds.site,
+   #                   aes(x = NMDS1, y = NMDS2), colour = "black", 
+    #                  fontface = "bold", label = row.names(nmds.site), size = 5) + 
+  #geom_segment(data = nmds.site,
+   #             aes(x = 0, y = 0, xend = NMDS1, yend = NMDS2), 
+    #           size =1, alpha = 0.5, colour = "grey30") +
   theme(axis.title.y = element_text(face = "bold", size = 20, colour = "black"),
         axis.text.y = element_text(colour = "black", size = 18, face = "bold"), 
         axis.text.x = element_text(colour = "black", face = "bold", size = 18), 

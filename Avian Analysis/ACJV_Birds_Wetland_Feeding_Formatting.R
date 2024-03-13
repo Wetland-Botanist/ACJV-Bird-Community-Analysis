@@ -49,14 +49,14 @@ write.csv(bird_species,
 bird_species <- read.csv("Avian Analysis\\Input Data\\Bird_Species_50m.csv")
 
 birds <- birds %>%
-  select(-totalbirds, -saltysparrow, -totalsparrow) %>%
+  dplyr::select(-totalbirds, -saltysparrow, -totalsparrow) %>%
   gather(key = "AlphaCode", value = "Count", AGWT:YEWA) %>%
   merge(., 
-        select(bird_species, AlphaCode, Feeding.Guild.Code, Wetland.Score),
+        dplyr::select(bird_species, AlphaCode, Feeding.Guild.Code, Wetland.Score),
         by = "AlphaCode") %>%
   rename(wetland_score = Wetland.Score,
          feeding_guild = Feeding.Guild.Code) %>%
-  select(PointID, Site, State, RegionNum, Treatment, VisitNum, runnel_age, Year, Point_X:Site_Date, 
+  dplyr::select(PointID, Site, State, RegionNum, Treatment, VisitNum, runnel_age, Year, Point_X:Site_Date, 
          DistBand, AlphaCode, Count, feeding_guild, wetland_score)
 
 write.csv(birds,

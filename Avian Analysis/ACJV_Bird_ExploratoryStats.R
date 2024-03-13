@@ -15,6 +15,11 @@ library(tidyr)
 library(dplyr)
 library(vegan)
 library(broom)
+library(lme4)
+library(afex)
+library(emmeans)
+library(ggResidpanel)
+
 
 #Graphing Packages
 library(ggplot2)
@@ -25,7 +30,7 @@ library(patchwork)
 
 #Chapter 2: Load the 0 - 50 m SHARP Point Count Survey
 
-birds <- read.csv("Avian Analysis\\Formatted Datasets\\Trustees Bird Dataset 50 m Distance.csv") %>%
+birds <- read.csv("Avian Analysis\\Formatted Datasets\\SHARP Bird Dataset 50 m Distance.csv") %>%
   select(2:length(.))
 
 
@@ -46,7 +51,7 @@ write.csv(birds_annual_mean,
           "Avian Analysis\\Formatted Datasets\\Bird totals MEAN by year within 50 m band.csv")
 
 
-#Chapter 4: Calculate Descriptive Stats of selected avian metrics  for Site Visits 
+#Chapter 4: Calculate Descriptive Stats of selected avian metrics for Site Visits 
 
 birds_treatment_stats <- birds_annual_mean %>%
   group_by(Treatment, Year) %>%
@@ -57,6 +62,7 @@ birds_treatment_stats <- birds_annual_mean %>%
     saltysparrow.m = mean(saltysparrow, na.rm = TRUE),
     totalsparrow.m = mean(totalsparrow, na.rm = TRUE),
     SALS.m = mean(SALS, na.rm = TRUE),
+    Count = n(),
     
     totalbirds.sd = sd(totalbirds, na.rm = TRUE)/sqrt(n()),
     richness.sd = sd(richness, na.rm = TRUE)/sqrt(n()),
@@ -179,6 +185,144 @@ ggsave(community_exploratory_graph,
        filename = "Avian Analysis\\Figures\\Bird Community by Treatment and Year.jpg",
        dpi = 300, units = "in", limitsize = FALSE,
        width = 14, height = 10)
+
+
+
+#Chapter 5: Two-way ANOVA of Bird Metrics (Treatment x Year)
+
+#Conducting a two-way ANOVA with Treatment, Year as fixed effects, PointID as a random effect (repeated sampling)
+
+
+#Prep the annual mean bird dataset for the model
+
+birds_data <- birds_annual_mean %>%
+  dplyr::select(Site, PointID, Treatment, Year, richness, shannon_div, saltysparrow, totalbirds) %>%
+  mutate(Year = as.factor(Year))
+
+glimpse(birds_data)
+
+
+#Analysis 1: Mixed Two-way ANOVA for 'saltysparrow' metric
+
+#Before final version of R code, I checked the residual plots of 'saltysparrow' and found 
+# a square-transformation was required
+
+salty <- lmer(sqrt(saltysparrow) ~ Treatment * Year + (1|Site/PointID),
+              data = birds_data)
+
+#Residual plots of the model -- checking assumptions of ANOVA
+resid_panel(salty)
+
+#Returning the ANOVA table for the model
+salty_anova <- tidy(anova(salty))
+
+salty_anova
+
+#Returning the Fixed and Random Effects table of the model
+salty_tidy <- broom.mixed::tidy(salty)
+
+salty_tidy
+
+
+#Post-hoc analysis between just Years for the model
+posthoc <- tidy(emmeans(salty, specs = pairwise ~ Year)$contrasts)
+
+posthoc
+
+
+
+
+
+#Analysis 2: Mixed Two-way ANOVA for 'totalbirds' metric
+
+#Before final version of R code, I checked the residual plots of 'totalbirds' and found 
+# a square-transformation was required
+
+totalbirds <- lmer(totalbirds ~ Treatment * Year + (1|Site/PointID),
+              data = birds_data)
+
+#Residual plots of the model -- checking assumptions of ANOVA
+resid_panel(totalbirds)
+
+#Returning the ANOVA table for the model
+totalbirds_anova <- tidy(anova(totalbirds))
+
+totalbirds_anova
+
+#Returning the Fixed and Random Effects table of the model
+totalbirds_tidy <- broom.mixed::tidy(totalbirds)
+
+totalbirds_tidy
+
+
+#Post-hoc analysis between just Years for the model
+posthoc <- tidy(emmeans(totalbirds, specs = pairwise ~ Year)$contrasts)
+
+posthoc
+
+
+#Analysis 3: Mixed Two-way ANOVA for 'richness' metric
+
+#Before final version of R code, I checked the residual plots of 'saltysparrow' and found 
+# a square-transformation was required
+
+richness <- lmer(richness ~ Treatment * Year + (1|Site/PointID),
+              data = birds_data)
+
+#Residual plots of the model -- checking assumptions of ANOVA
+resid_panel(richness)
+
+#Returning the ANOVA table for the model
+richness_anova <- tidy(anova(richness))
+
+richness_anova
+
+#Returning the Fixed and Random Effects table of the model
+richness_tidy <- broom.mixed::tidy(richness)
+
+richness_tidy
+
+
+#No post-hoc test required, since there were no significant terms
+
+
+
+
+#Analysis 4: Mixed Two-way ANOVA for 'shannon_div' metric
+
+#Before final version of R code, I checked the residual plots of 'shannon_div' and found 
+# a square-transformation was required
+
+shannon_div <- lmer(shannon_div ~ Treatment * Year + (1|Site/PointID),
+                 data = birds_data)
+
+#Residual plots of the model -- checking assumptions of ANOVA
+resid_panel(shannon_div)
+
+#Returning the ANOVA table for the model
+shannon_div_anova <- tidy(anova(shannon_div))
+
+shannon_div_anova
+
+#Returning the Fixed and Random Effects table of the model
+shannon_div_tidy <- broom.mixed::tidy(shannon_div)
+
+shannon_div_tidy
+
+
+#No post-hoc test required, since there were no significant terms
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
