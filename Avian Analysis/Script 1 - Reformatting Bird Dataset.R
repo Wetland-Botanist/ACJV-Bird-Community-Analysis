@@ -1,7 +1,8 @@
-#Title: Formatting of SHARP Point Count Surveys
+#Project: Avian Community Analysis of SHARP Point Counts of ACJV Project
+#Script: Part I - Combining Bird Datasets & Formatting for Analysis
 #Author: Grant McKown (james.mckown@unh.edu)
 #Date Created: February 12th, 2024
-#Date Last Edited: February 12th, 2024
+#Date Last Edited: March 21st, 2024
 
 
 # Purpose: Combine the separate SHARP datasets over 2021 - 2023 for exploratory, multivariate, and modeling analysis
@@ -14,6 +15,7 @@ rm(list = ls())
 #Stats & Data Organization Packages
 library(tidyr)
 library(dplyr)
+library(vegan)
 
 
 #Chapter 2: Load all of the bird datasets
@@ -24,7 +26,7 @@ library(dplyr)
 # (3) All States 2022
 # (4) All Stats 2023
 
-# Bird datsets were not standardized upon data entry requiring needed data reformatting in Excel before R including:
+# Bird datasets were not standardized upon data entry requiring needed data reformatting in Excel before R including:
 # (1) Column renaming 
 # (2) Miscellaneous columns removal, especially when they weren't used across years
 # (3) Creation of new columns including overall 'Treatment' category
@@ -84,31 +86,38 @@ birds_all <- bind_rows(bird_me_ma_21, bird_ri_21, bird_2022, bird_2023) %>%
   spread(key = AlphaCode, value = TotalCountN) %>%
   #Remove all of the NAs from the species column
   mutate(across(AGWT:YEWA, ~ifelse(is.na(.), 0, .))) %>%
-  #Calculate the total number of birds, "salty sparrows", and total sparrows  observed 
-    # for each site visit and distance band
-  #Calculate the age of the runnel for each site visit for the runnel SHARP Points
-  mutate(totalbirds = rowSums(select(., AGWT:YEWA)),
+  mutate(
+    #Calculate the total number of birds, "salty sparrows", and total sparrows  observed 
+    totalbirds = rowSums(select(., AGWT:YEWA)),
+    #Calculates the total number of endemic sparrows to salt marshes
          saltysparrow = SALS + NESP + STSP,
-         totalsparrow = SALS+ + NESP + STSP + SESP + UNK_SP,
+    #Calculates species richness using rowSums
+         richness = rowSums(dplyr::select(., AGWT:YEWA) > 0, na.rm = FALSE),
+    #Calculates Shannon Diversity using the vegan package, rounds to 2 decimal points
+         shannon = round(diversity(dplyr::select(., AGWT:YEWA), index = "shannon"), 2),
+    #Calculates runnel age for all Runnel Treatment ShARP Points
          runnel_age = ifelse(Treatment == "RUN", Year - Runnel_Year0, NA)) %>%
   #Remove the Ipswich Runnel West SHARP Point, since the runnel was never created
-  filter(PointID != "Ipswich RUN West") %>%
+  filter(PointID != "Ipswich RUN West" & 
+         PointID != "Ipswich REF West" &
+         PointID != "Ipswich NAC West") %>%
   #Rename the Treatments
   mutate(Treatment = ifelse(Treatment == "RUN", "Runnel",
                             ifelse(Treatment == "NAC", "No Action",
                                    "Reference"))) %>%
   #Keep only necessary columns for further analysis and arrange for easier viewing
   select(RegionNum, State, PointID, Site, Treatment, runnel_age, Point_X, Point_Y,
-          VisitNum:Site_Date, totalbirds, saltysparrow, totalsparrow, AGWT:YEWA) %>%
+          VisitNum:Site_Date, richness, shannon, totalbirds, saltysparrow, AGWT:YEWA) %>%
   arrange(PointID, Year, VisitNum)
 
-# Formatted bird dataset is sent to the "Formatted Datsets" folder for use in next step code
+# Formatted bird dataset is sent to the "Formatted Datasets" folder for use in next step code
+# Dataset is saved for posterity
 write.csv(birds_all, 
           "Avian Analysis\\Formatted Datasets\\SHARP Bird Dataset with Missing Distance Band.csv")
 
 
 
-# Chaper 4: Complete the dataset with missing Distance Bands for each site visit
+# Chapter 4: Complete the dataset with missing Distance Bands for each site visit
 
 birds_complete <- birds_all %>%
   group_by(PointID, Year, VisitNum) %>%
@@ -119,7 +128,7 @@ birds_complete <- birds_all %>%
   ungroup()
 
 write.csv(birds_complete,
-          "Avian Analysis\\Formatted Datasets\\SHARP Bird Datset with Completed Distance Band.csv")
+          "Avian Analysis\\Formatted Datasets\\SHARP Bird Dataset with Completed Distance Band.csv")
 
 
 #Chapter 4: Reduce and reformat the entire dataset for only distance bands of 0 - 50 m
@@ -128,8 +137,9 @@ birds_50 <- birds_complete %>%
   filter(DistBand == "0-50m")
 
 # Formatted bird dataset is sent to the "Formatted Datasets" folder for use in next step code
+# This is the dataset that will be used in Part II Script - Addition of Wetland and Feeding Habit Scores
 write.csv(birds_50,
-          "Avian Analysis\\Formatted Datasets\\SHARP Bird Dataset 50 m Distance.csv")
+          "Avian Analysis\\Formatted Datasets\\SHARP Bird 50 m Distance.csv")
 
 
 
@@ -168,7 +178,7 @@ birds_meta <- birds_50 %>%
                          collapse = ", ")) %>%
   ungroup()
 
-
+# Dataset is saved for posterity and background information on the project
 write.csv(birds_meta,
           "Avian Analysis\\Formatted Datasets\\Metadata of SHARP Point Visits.csv")
 
