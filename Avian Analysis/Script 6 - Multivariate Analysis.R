@@ -17,6 +17,7 @@ rm(list = ls())
 library(tidyr)
 library(dplyr)
 library(vegan)
+library(pairwiseAdonis)
 library(broom)
 library(stringr)
 
@@ -26,6 +27,8 @@ library(patchwork)
 library(ggrepel)
 library(viridis)
 
+
+set.seed(1994)
 
 #Chapter 2: Import the SHARP 0 - 50 m Survey Averaged Dataset
 
@@ -133,17 +136,19 @@ nmds.site <- data.frame(r  = nmds.site.env$vector$r,
 
 Bird_NMDS = ggplot(data = nmds.points,
                    aes(x = MDS1, y = MDS2)) + 
-  geom_point(aes(colour = Treatment, shape = Region),
+  geom_point(aes(colour = Year, shape = Year),
              size = 6, alpha = 1, stroke = 1.5) + 
+  stat_ellipse(aes(color = Year),
+               linewidth = 1.5) + 
   #geom_text_repel(aes(label = Site_Date)) +
-   geom_text(data = nmds.species,
+   geom_text_repel(data = nmds.species,
            aes(x = NMDS1, y = NMDS2), colour = "black", 
           fontface = "bold", label = row.names(nmds.species), size = 5) + 
   geom_segment(data = nmds.species,
               aes(x = 0, y = 0, xend = NMDS1, yend = NMDS2), 
              size =1, alpha = 0.5, colour = "grey30") +
   geom_text_repel(data = nmds.site,
-                  aes(x = NMDS1 + 0.05, y = NMDS2), colour = "black", 
+                  aes(x = NMDS1, y = NMDS2), colour = "black", 
                   fontface = "bold", label = row.names(nmds.site), size = 5) + 
   geom_segment(data = nmds.site,
                aes(x = 0, y = 0, xend = NMDS1, yend = NMDS2), 
@@ -163,7 +168,7 @@ Bird_NMDS
 
 
 ggsave(Bird_NMDS,
-       filename = "Avian Analysis\\Figures\\NMDS - Region & Treatment.jpg",
+       filename = "Avian Analysis\\Figures\\NMDS - Year.jpg",
        dpi = 300, units = "in", limitsize = FALSE,
        height = 10, width = 14)
 
@@ -179,14 +184,14 @@ nmds.points.mean <- as.data.frame(scores(nmds$points)) %>%
          Region = plots$Region,
          PlotID = plots$PlotID,
          Year = as.factor(plots$Year)) %>%
-  group_by(Year, Region) %>%
+  group_by(Region) %>%
   summarise(across(MDS1:MDS2, ~mean(.))) %>%
   ungroup()
 
 
 Bird_NMDS_Mean = ggplot(data = nmds.points.mean,
                    aes(x = MDS1, y = MDS2)) + 
-  geom_point(aes(colour = Region, shape = Year),
+  geom_point(aes(colour = Region, shape = Region),
              size = 6, alpha = 1, stroke = 1.5) + 
   #geom_text_repel(aes(label = Site_Date)) +
   geom_text(data = nmds.species,
@@ -205,7 +210,7 @@ Bird_NMDS_Mean = ggplot(data = nmds.points.mean,
         axis.text.y = element_text(colour = "black", size = 18, face = "bold"), 
         axis.text.x = element_text(colour = "black", face = "bold", size = 18), 
         legend.text = element_text(size = 12, face ="bold", colour ="black"), 
-        legend.position = c(0.10, 0.15),
+        legend.position = c(0.05, 0.15),
         axis.title.x = element_text(face = "bold", size = 20, colour = "black"), 
         legend.title = element_text(size = 18, colour = "black", face = "bold"), 
         panel.background = element_blank(), panel.border = element_rect(colour = "black", fill = NA, size = 1.2),
@@ -216,7 +221,7 @@ Bird_NMDS_Mean
 
 
 ggsave(Bird_NMDS_Mean,
-       filename = "Avian Analysis\\Figures\\Mean NMDS - Region & Year.jpg",
+       filename = "Avian Analysis\\Figures\\Mean NMDS - Region.jpg",
        dpi = 300, units = "in", limitsize = FALSE,
        height = 10, width = 14)
 
@@ -225,12 +230,22 @@ ggsave(Bird_NMDS_Mean,
 
 
 
-#Chapter 6: MRPP Comparison Between groupings
+#Chapter 6: PERMANOVA comparisons for each individual factor
 
-# The second step in the multi-variate analysis is comparison of the community between groupings
-# Groupings to be tested: Year, Treatment, and Region
+# The second step in the multivariate analysis is the comparison of the avian community
+# between each grouping (Year, Treatment, and Region). PERMANOVAs will be used to conducted
+# both the initial and post-hoc multiple comparisons. 
 
-#Analysis 1: MRPP of Year 
+# PERMANOVA is selected due to the non-parametric structure of the data set. 
+
+# Groupings will be analyzed separately and individually from other factors, since
+# we are not interested in exploring more complex modelling of the avian community
+
+# Post-hoc multiple comparisons are conducted by the pairwise.adonis2() function
+# from the pairwiseadonis package -- simply a wrapper that conducts bonferonni - corrected
+# PERMANOVA comparisons between two levels in each factor. 
+
+#Analysis 1: PERMANOVA of the Different Years
 
 perm_year <- adonis2(species ~ Year,  
                           method = "bray",
@@ -239,23 +254,12 @@ perm_year
 
 #MRPP was significant between the three classes, so pairwise comparisons!
 
-perm_21_22 <- mrpp(dat = species, grouping = plots$Year[plots$Year != 2023],
-                   distance = 'bray')
+posthoc_year <- pairwise.adonis2(species ~ Year,
+                 data = plots,
+                 method = "bray",
+                 p.adjust.m = 'bonferonni')
 
-perm_21_22 # Not significant...
-
-perm_21_23 <- mrpp(dat = species, grouping = plots$Year[plots$Year != 2022],
-                   distance = 'bray')
-
-perm_21_23 #Not significant too...
-
-
-perm_22_23 <- mrpp(dat = species, grouping = plots$Year[plots$Year != 2021],
-                   distance = 'bray')
-
-perm_22_23 #Not significant too...
-
-
+posthoc_year
 
 #Analysis 2: Treatment
 
@@ -285,8 +289,18 @@ write.csv(permanova_tables,
 
 #Chapter 6: Similarity of Percentages (SIMPER) Analysis
 
+#Similarity of Percentages is performed for Year and Region
+
+#Analysis 1: SIMPER conducted between the two Regions
+
 region_simper <- simper(species, plots$Region)
 
 summary(region_simper)
 
+
+#Analysis 2: SIMPER conducted between the three years
+
+year_simper <- simper(species, plots$Year)
+
+summary(year_simper)
 

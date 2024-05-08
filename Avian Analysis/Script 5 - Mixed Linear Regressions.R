@@ -93,6 +93,10 @@ total_tidy
 
 r.squaredLR(total)
 
+#Returning the Summary of the Model to copy + paste the Variance Explained by Random Effects
+
+summary(total)
+
 # Graph the linear regression (feel free to remove hashtag to see individual site labels)
 
 total_graph <- ggplot(birds,
@@ -160,6 +164,10 @@ salty_tidy <- broom.mixed::tidy(salty) %>%
 salty_tidy
 
 r.squaredLR(salty)
+
+#Returning the Summary of the Model to copy + paste the Variance Explained by Random Effects
+
+summary(salty)
 
 
 #Predicted values of the Marsh Sparrow Model
@@ -241,6 +249,10 @@ panne_tidy <- broom.mixed::tidy(panne) %>%
 
 panne_tidy
 
+#Returning the Summary of the Model to copy + paste the Variance Explained by Random Effects
+
+summary(panne)
+
 
 #No significant regression found, so no need to use ggpredict()
 
@@ -302,6 +314,10 @@ wetland_tidy
 
 r.squaredLR(wetland)
 
+
+#Returning the Summary of the Model to copy + paste the Variance Explained by Random Effects
+
+summary(wetland)
 
 #Predicted values of the Marsh Sparrow Model
 
@@ -381,6 +397,11 @@ shannon_tidy <- broom.mixed::tidy(shannon) %>%
 
 shannon_tidy
 
+#Returning the Summary of the Model to copy + paste the Variance Explained by Random Effects
+
+summary(shannon)
+
+
 #No significant regression found, so no need to predict the values of the regression
 
 
@@ -436,6 +457,11 @@ species_richness_tidy <- broom.mixed::tidy(species_richness) %>%
   mutate(metric = 'richness')
 
 species_richness_tidy
+
+
+#Returning the Summary of the Model to copy + paste the Variance Explained by Random Effects
+
+summary(species_richness)
 
 #No significant regression found, so no need to predict the values of the regression
 

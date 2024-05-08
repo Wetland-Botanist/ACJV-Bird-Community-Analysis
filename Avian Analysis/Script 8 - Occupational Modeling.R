@@ -24,6 +24,7 @@ library(vegan)
 library(broom)
 library(ggeffects)
 library(stringr)
+library(lubridate)
 
 #Graphing Packages
 library(ggplot2)
@@ -43,7 +44,7 @@ library(MuMIn)
 # Selecting only the bird, site, and observation variables
 
 
-#Note, the dadtaset used for occupational modeling is the 50 m SHARP with BOTH site visits in a single season
+#Note, the dataset used for occupational modeling is the 50 m SHARP with BOTH site visits in a single season
 
 sparrows <- read.csv("Avian Analysis\\Formatted Datasets\\SHARP Bird 50 m Distance.csv") %>%
   select(-X) %>%
@@ -54,18 +55,17 @@ sparrows <- read.csv("Avian Analysis\\Formatted Datasets\\SHARP Bird 50 m Distan
   mutate(State = ifelse(str_starts("Broad Cove", Site), "RI", State)) %>%
   mutate(Region = ifelse(State == "RI", "Narragansett Bay", 
                          ifelse (State == "MA", "North Shore Mass", "North Shore Mass"))) %>%
-  mutate(survey_elapsed = difftime(time1 = as.POSIXct(SurveyDate, format = '%m/%d/%Y'),
-                                   time2 = as.POSIXct('01/01/2023', format = '%m/%d/%Y'),
-                                   units = 'days'),
-         survey_elapsed = round(as.numeric(survey_elapsed), 1)) %>%
-  select(PointID, Year, VisitNum, State, Site, Region, Treatment, 
-         SurveyWindow, survey_elapsed, Tide, TempF:Noise, saltysparrow)
+  mutate(survey_hour= hour(as.POSIXct(SurveyTime, format = '%I:%M')),
+         survey_min = minute(as.POSIXct(SurveyTime, format = '%I:%M')) / 60,
+         survey_elapsed = round(survey_hour + survey_min, 2)) %>%
+select(PointID, Year, VisitNum, State, Site, Region, Treatment, 
+         SurveyWindow, survey_elapsed, TempF:Noise, saltysparrow)
 
-
+glimpse(sparrows)
 
 #Import the vegetation dataset
 
-veg <- read.csv("Avian Analysis\\Input Data\\SHARP_Veg_2023.csv")
+veg <- read.csv("Avian Analysis\\Input Data\\SHARP_Veg_2023_HabCovers.csv")
 
 #Merge the Birds and Vegetation Dataset together
 
@@ -97,7 +97,7 @@ sparrow_occu <- format_unmarked_occu(sparrows_veg,
                                      site_covs = c('low_marsh', 'high_marsh', 'pannes', 'open_water',
                                                    'SPALT_short', 'SPPAT', 'DISPI',
                                                    'Treatment', 'Region'),
-                                     obs_cov = c('SurveyWindow', 'survey_elapsed', 'Tide', 'TempF', 'Sky', 'WindSp', 'Noise'))
+                                     obs_cov = c('SurveyWindow', 'survey_elapsed', 'TempF', 'Sky', 'WindSp', 'Noise'))
 
 sparrow_occu_data <- formatWide(sparrow_occu, type ='unmarkedFrameOccu')
 
@@ -143,28 +143,98 @@ predict(occu_model,
 # survey covariates to include in the model. Using the dredge() function of the MuMin package, we will
 # test all model combinations of the survey covariates
 
+#Step 1: Select the Detection Model with the lowest AIC Value 
+# Due to previous research and requirements of SHARP monitoring, the following will be included
+# in the detection model: Noise, Temperature, Wind speed, Cloud Cover, and Survey Window
 
-survey_occu <- occu(formula = ~ Noise
-                    ~ Region,
+survey_detection <- occu(formula = ~ Noise + WindSp + TempF + SurveyWindow + survey_elapsed + Sky
+                    ~ 1,
                   data = sparrow_occu_data)
 
-summary(survey_occu)
+summary(survey_detection)
 
 
-survey_dredge <- dredge(global.model = survey_occu,
+survey_dredge <- dredge(global.model = survey_detection,
                       rank = 'AICc')
 
 summary(survey_dredge)
 
 survey_dredge[1:5, ]
 
+# Overall, the simplest detection model included just Noise as a covariate. 
 
-region <- predict(survey_occu,
-        new_data = data.frame(Treatment = c('Reference', 'Runnel', 'No Action')),
-        type = 'det') %>%
-  cbind(select(sparrow_occu, Treatment)) %>%
-  distinct(Treatment, .keep_all = TRUE)
+# Step 2: Select the Occupation Model with the lowest AIC Value (Habitat Model)
 
+#Habitat covariates selected include: low_marsh, high_marsh, pannes, and open_water
+
+survey_occupation <- occu(formula = ~ 1
+                          ~low_marsh + high_marsh + open_water + pannes,
+                          data = sparrow_occu_data)
+
+summary(survey_occupation)
+
+survey_dredge <- dredge(global.model = survey_occupation,
+              rank = 'AICc')
+
+summary(survey_dredge)
+
+survey_dredge[1:5, ]
+
+# Based off the lowest AIC values, Low Marsh and Panne were selected as habitat covariates
+
+
+# Step 2.5: Select the Occupation Model with the lowest AIC Value (Veg Species Model)
+
+#Vegetation Species covariates include: SPALT_short, SPPAT, and DISPI
+survey_species <- occu(formula = ~ 1
+                       ~ SPALT_short + SPPAT + DISPI,
+                       data = sparrow_occu_data)
+
+summary(survey_species)
+
+survey_dredge <- dredge(global.model = survey_species,
+                        rank = 'AICc')
+
+survey_dredge[1:5, ]
+
+
+#Step 3: Combine the Models for a Full Occupany Model (Habitat Model)
+
+survey_full <- occu(formula = ~ Noise ~  low_marsh + pannes + high_marsh,
+                    data = sparrow_occu_data)
+
+summary(survey_full)
+
+new.data = expand.grid(
+  cover = seq(0, 100, by = 2),
+  habitat = c('low_marsh', 'pannes'))
+
+Habitat_Model_Predict <- predict(survey_full,
+                                 new_ata = new.data,
+        type = 'det', na.rm = TRUE) %>%
+  cbind(new.data) %>%
+  filter(is.na(Predicted))
+
+predict_m2_low <- cbind(predict(survey_full,
+                                   newdata = data.frame(low_marsh = seq(min(sparrows_veg$low_marsh, 
+                                                                         na.rm = TRUE),
+                                                                     max(sparrows_veg$low_marsh, 
+                                                                         na.rm = TRUE), 
+                                                                     by = 0.01),
+                                                        pannes = mean(sparrows_veg$pannes)),
+                                   type = "state"),
+                           data.frame(low_marsh = seq(min(sparrows_veg$low_marsh, 
+                                                       na.rm = TRUE),
+                                                   max(sparrows_veg$low_marsh, 
+                                                       na.rm = TRUE), 
+                                                   by = 0.01),
+                                      pannes = mean(sparrows_veg$pannes)))
+
+ggplot(data = predict_m2_low, aes(x = low_marsh, y = Predicted)) +
+  geom_ribbon(aes(ymin = lower, ymax = upper), fill = "gray") +
+  stat_smooth(method = "loess", col = "black", se = FALSE) +
+  labs(x = "Forest (scaled)", y = "Predicted Occupancy Probability") +
+  theme_classic()
 
 
 ggplot(region,
@@ -175,57 +245,5 @@ ggplot(region,
                 stat = 'identity')
 
 
-region <- predict(survey_occu,
-                  new_data = data.frame(Treatment = c('Reference', 'Runnel', 'No Action'),
-                                        Region = c('Narragansett Bay', 'North Shore Mass')),
-                  type = 'state') %>%
-  cbind(select(sparrow_occu, Treatment, Region)) %>%
-  distinct(Treatment, Region, .keep_all = TRUE)
-
-
-
-ggplot(region,
-       aes(y = Predicted, group = Region)) +
-  geom_bar(aes(x = Treatment, fill = Region),
-           stat = 'identity', position = position_dodge(0.9)) + 
-  geom_errorbar(aes(ymin = lower, ymax = upper, x = Treatment, group = Region),
-                stat = 'identity', position = position_dodge(0.9))
-
-#It appears that the null model, with no survey covariates is best describes the 
-# the variance in the model. Null model had lowest AIC value. 
-
-
-
-# Task 2 - Occupancy modeling for marsh habitats
-
-# In task 1, we just wanted to know the overall occupancy and detection probability of the 2023 dataset without
-# considering any site or observation covariates
-
-# In task 2, we will want to understand how selected marsh vegetation habitats - low marsh, high marsh, pannes, 
-# and open water, may impact marsh occupancy probability.Additionally, we will include the observation covariates
-# for each visit including temperature, noise, rainfall, survey date, personnel, and tidal stage
-
-# Let's look at the model first without considering any observation covariates (detection probability = 77%)
-
-hab_global <- occu(formula = ~ 1
-                   ~ Region,
-                   data = sparrow_occu_data)
-
-hab_dredge <- dredge(global.model = hab_global,
-       rank = 'AICc')
-
-hab_dredge[1:5, ]
-
-modSel(fit)
-
-
-
-#Graph up an example of the Occupany Model
-
-SPPAT_predict <- predict(fm,
-                         newdata = data.frame(SPPAT = seq(min(site_occu$SPPAT), max(site_occu$SPPAT), 0.1)),
-                                              type = "state") %>%
-  cbind(data.frame(SPPAT = seq(min(site_occu$SPPAT), max(site_occu$SPPAT), 0.1)))
-                        
 
 
